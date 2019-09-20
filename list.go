@@ -26,12 +26,14 @@ func (self *Dll) IsEmpty() bool{
 	return self.len == 0
 }
 
+//creates new node to append to the list
 func (self *Dll) Append(str string){
 	newNode := new(node)
 	newNode.data = str
 	self.pushBack(newNode)
 }
 
+//creates a new node to enqueue to the list
 func (self *Dll) AppendFront(str string){
 	newNode := new(node)
 	newNode.data = str
@@ -58,15 +60,17 @@ func (self *Dll) Peek() string{
 //endregion
 
 //region Private
-func (self *Dll) pushBack(n *node){
 
+//push node to the back of the list
+func (self *Dll) pushBack(n *node){
+	//special empty list case
 	if self.len == 0 {
 		n.setNext(self.tail)
 		n.setPrev(self.head)
 		self.tail.setPrev(n)
 		self.head.setNext(n)
 	}
-
+	//general case
 	if self.len > 0 {
 		n.setNext(self.tail)
 		n.setPrev(self.tail.prev)
@@ -77,6 +81,7 @@ func (self *Dll) pushBack(n *node){
 
 }
 
+//remove and return node at the back of the list
 func (self *Dll) popBack() *node{
 
 	ret := self.tail.prev
@@ -92,20 +97,34 @@ func (self *Dll) popBack() *node{
 	return ret
 }
 
-//pushes n to the front of the list
+//insert node n at the front of the list
 func (self *Dll) enqueue(n *node){
-	//creates a new node and points it to the head and the item after the head
-	n.setPrev(self.head)
-	n.setNext(self.head.getNext())
-	//captures the node after the head and sets its prev to the new node
-	temp := self.getHead().getNext()
-	temp.setPrev(n)
-	//points the head to the new node
-	self.getHead().setNext(n)
+	//general case
+	if self.len > 0 {
+		//set the new node's pointers
+		n.setPrev(self.head)
+		n.setNext(self.head.getNext())
+		//captures the node after the head and sets its prev to the new node
+		temp := self.getHead().getNext()
+		temp.setPrev(n)
+		//points the head to the new node
+		self.getHead().setNext(n)
+	}
+	//special case: Empty List
+	if self.len == 0{
+		//set the new node's pointers
+		n.setNext(self.tail)
+		n.setPrev(self.head)
+		//point the sentinel to the new node
+		self.head.setNext(n)
+		self.tail.setPrev(n)
+
+	}
 	//increase the length of the list
 	self.len++
 }
 
+//remove and return front node of the list
 func (self *Dll)dequeue() *node{
 	ret := self.head.getNext()
 
@@ -124,10 +143,14 @@ func (self *Dll)dequeue() *node{
 
 }
 
+//return pointer to the sentinel of the list
+//pragma: does exactly the same as getTail() but is used for code clarity in functions pertaining to the "head"
 func (self *Dll) getHead() *node  {
 	return self.head
 }
 
+//returns a pointer to the sentinel of the list
+//pragma: does exactly the same of getHead() but is used for code clarity in functions pertaining to the "tail"
 func (self *Dll) getTail() *node  {
 	return self.tail
 }
