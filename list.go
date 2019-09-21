@@ -41,6 +41,11 @@ func (self *Dll) AppendFront(str string){
 }
 
 func (self *Dll) Pop() string{
+
+	if self.len == 0 {
+		return ""
+	}
+
 	return self.popBack().data
 
 }
@@ -54,6 +59,10 @@ func (self *Dll) Len() int{
 }
 
 func (self *Dll) Peek() string{
+	if self.len == 0{
+		return ""
+	}
+
 	return self.head.next.data
 }
 
