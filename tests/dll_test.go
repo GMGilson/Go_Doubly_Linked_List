@@ -62,7 +62,8 @@ func TestAppendFrontNonEmptyList(t *testing.T){
 }
 
 func TestPopFromEmptyList(t *testing.T){
-
+	list := dll.MakeEmptyDLL()
+	list.A
 }
 
 func TestPopFromList(t *testing.T){
